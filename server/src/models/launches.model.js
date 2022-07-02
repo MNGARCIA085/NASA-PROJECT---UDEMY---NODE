@@ -8,7 +8,7 @@ const launches = new Map();
 const launch = {
     mission:'dsfs',
     rocket:'dsfds',
-    launchDate:new Date(12, 17, 2024),
+    launchDate:new Date('December 17, 1995 03:24:00'),
     destination:'32423',
     fligthNumber: 100, // id único
     customer: ['NASA', 'ztm'],
