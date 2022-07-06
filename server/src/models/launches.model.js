@@ -17,7 +17,7 @@ const launch = {
     fligthNumber: 100, // id único
     customer: ['NASA', 'ztm'],
     upcoming:true,
-    succes:true
+    success:true
 }
 
 
@@ -46,8 +46,28 @@ function addNewLaunch(launch){
 
 
 
+
+//
+function existLaunchById(launchId){
+    return launches.has(launchId);
+}
+
+
+// borrar
+function abortLaunchById(launchId){
+    // no lo voy a borrar, sólo le cambiaré el estado
+    const aborted = launches.get(launchId);
+    aborted.upcoming = false;
+    aborted.success = false;
+    return aborted
+}
+
+
+
 // exportamos para que se pueda usar desde otro lado
 module.exports = {
     getAllLaunches,
-    addNewLaunch
+    addNewLaunch,
+    existLaunchById,
+    abortLaunchById
 }
