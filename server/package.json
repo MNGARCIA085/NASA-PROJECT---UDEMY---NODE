@@ -20,6 +20,8 @@
     "nasa-project---udemy---node": "file:.."
   },
   "devDependencies": {
-    "nodemon": "^2.0.18"
+    "jest": "^28.1.2",
+    "nodemon": "^2.0.18",
+    "supertest": "^6.2.4"
   }
 }
