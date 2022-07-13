@@ -1,7 +1,6 @@
+const launchesDatabase = require('./launches.mongo');
+const planets =  require('./planets.mongo');
 
-
-// mapa que contendrá todos los lanzamientos
-const launches = new Map();
 
 
 // id de lanzamiento
@@ -23,12 +22,12 @@ const launch = {
 
 
 // le ingresamos el lanzamiento particular a launches
-launches.set(launch.fligthNumber,launch); // par clave-valor
+saveLaunch(launch);
 
 
 //
-function getAllLaunches(){
-    return Array.from(launches.values());
+async function getAllLaunches(){
+    return await launchesDatabase.find( {}, {'_id':0, '__v':0} );
 }
 
 
@@ -61,6 +60,28 @@ function abortLaunchById(launchId){
     aborted.success = false;
     return aborted
 }
+
+
+
+// guardar lanzamiento
+async function saveLaunch(launch) {
+
+
+    const planet = await planets.findOne({
+        keplerName:launch.target,
+    })
+
+    if (!planets) {
+        throw new Error('No matching planets found');
+    }
+
+
+    await launchesDatabase.findOneAndUpdate({
+      flightNumber: launch.flightNumber,
+    }, launch, {
+      upsert: true,
+    });
+  }
 
 
 
