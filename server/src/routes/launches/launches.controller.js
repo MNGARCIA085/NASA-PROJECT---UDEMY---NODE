@@ -1,7 +1,7 @@
 const { 
     getAllLaunches ,
-    addNewLaunch,
-    existLaunchById,
+    scheduleNewLaunch,
+    existsLaunchWithId,
     abortLaunchById
 } = require('../../models/launches.model');
 
@@ -12,7 +12,7 @@ async function httpGetAllLaunches (req, res) {
 }
 
 // add
-function httpAddNewLaunch(req,res){
+async function httpAddNewLaunch(req,res){
     const launch = req.body;
     console.log(launch);
     // valido datos obligatorios
@@ -30,25 +30,44 @@ function httpAddNewLaunch(req,res){
         })
     }
     // agrego
-    addNewLaunch(launch);
+    await scheduleNewLaunch(launch);
     // respuesta
     res.status(200).json(launch);
 }
 
 
-// delete
-function httpAbortLaunch(req,res){
+
+
+
+
+// cancelar un lanzamiento
+async function httpAbortLaunch(req, res) {
+
     const launchId = Number(req.params.id);
-    
-    if (!existLaunchById(launchId)) {
-        return res.status(404).json({
-            error:'No existe el lanzamiento'
-        })
-    } else {
-        const aborted = abortLaunchById(launchId);
-        return res.status(200).json(aborted);
-    } 
-}
+    console.log(launchId);
+  
+    // chequeo que exista
+    const existsLaunch = await existsLaunchWithId(launchId);
+    if (!existsLaunch) {
+      return res.status(404).json({
+        error: 'Launch not found',
+      });
+    }
+  
+    // si no se pudo cancelar
+    const aborted = await abortLaunchById(launchId);
+    if (!aborted) {
+      return res.status(400).json({
+        error: 'Launch not aborted',
+      });
+    }
+  
+    // si todo salio bien
+    return res.status(200).json({
+      ok: true,
+    });
+  }
+  
 
 module.exports = {
     httpGetAllLaunches,
