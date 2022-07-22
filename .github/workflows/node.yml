@@ -5,7 +5,7 @@ on:  # triggers, lo que se ejecuta cuando hago por ejemplo un push o un pull req
  push:
    branches: [master]  
  # se ejecuta cuando se hace un pull request a la rama master
- pull-request:
+ pullrequest:
    branches: [master]  
  
  
